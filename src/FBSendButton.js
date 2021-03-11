@@ -25,22 +25,10 @@
 import * as React from 'react';
 import {requireNativeComponent, StyleSheet} from 'react-native';
 
-import type {ShareContent} from './models/FBShareContent';
+// import type {ShareContent} from './models/FBShareContent';
 
-class SendButton extends React.Component<{
-  /**
-   * Content to be shared.
-   */
-  shareContent: ShareContent,
-
-  /**
-   * View style, if any.
-   */
-  style?: any,
-}> {
-  static defaultProps: {
-    style: typeof styles.defaultButtonStyle,
-  };
+class SendButton extends React.Component {
+  static defaultProps;
 
   render() {
     return <RCTFBSendButton {...this.props} />;

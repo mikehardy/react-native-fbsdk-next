@@ -44,18 +44,18 @@ type Params = {[key: string]: string | number};
  * See https://developers.facebook.com/docs/app-events/advanced-matching for
  * more info about the expected format of each field.
  */
-type UserData = $ReadOnly<{|
-  email?: ?string,
-  firstName?: ?string,
-  lastName?: ?string,
-  phone?: ?string,
-  dateOfBirth?: ?string,
-  gender?: ?('m' | 'f'),
-  city?: ?string,
-  state?: ?string,
-  zip?: ?string,
-  country?: ?string,
-|}>;
+type UserData = {
+  email?: string,
+  firstName?: string,
+  lastName?: string,
+  phone?: string,
+  dateOfBirth?: string,
+  gender?: 'm' | 'f',
+  city?: string,
+  state?: string,
+  zip?: string,
+  country?: string,
+};
 
 module.exports = {
   /**
@@ -78,6 +78,7 @@ module.exports = {
   logEvent(eventName: string, ...args: Array<number | Params>) {
     let valueToSum = 0;
     if (typeof args[0] === 'number') {
+      // @ts-ignore the below code worked before but needs typing coercion FIXME typescript migration
       valueToSum = args.shift();
     }
     let parameters = null;
@@ -93,7 +94,7 @@ module.exports = {
   logPurchase(
     purchaseAmount: number,
     currencyCode: string,
-    parameters?: ?Params,
+    parameters?: Params,
   ) {
     AppEventsLogger.logPurchase(purchaseAmount, currencyCode, parameters);
   },
@@ -101,7 +102,7 @@ module.exports = {
   /**
    * Logs an app event that tracks that the application was open via Push Notification.
    */
-  logPushNotificationOpen(payload: ?Object) {
+  logPushNotificationOpen(payload?: Object) {
     AppEventsLogger.logPushNotificationOpen(payload);
   },
 
@@ -123,21 +124,21 @@ module.exports = {
   /**
    * Returns user id or null if not set
    */
-  async getUserID(): Promise<?string> {
+  async getUserID(): Promise<string | null> {
     return await AppEventsLogger.getUserID();
   },
 
   /**
    * Returns anonymous id or null if not set
    */
-  async getAnonymousID(): Promise<?string> {
+  async getAnonymousID(): Promise<string | null> {
     return await AppEventsLogger.getAnonymousID();
   },
 
   /**
    * Returns advertiser id or null if not set
    */
-  async getAdvertiserID(): Promise<?string> {
+  async getAdvertiserID(): Promise<string | null> {
     return await AppEventsLogger.getAdvertiserID();
   },
 
@@ -145,7 +146,7 @@ module.exports = {
    * Returns advertiser id or null if not set.
    * @platform android
    */
-  async getAttributionID(): Promise<?string> {
+  async getAttributionID(): Promise<string | null> {
     if (Platform.OS === 'ios') {
       return null;
     }

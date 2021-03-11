@@ -38,7 +38,7 @@ type OpenGraphValueType = 'number' | 'open-graph-object' | 'photo' | 'string';
 class ShareOpenGraphValueContainer {
   _properties: OpenGraphProperties;
 
-  constructor(properties: ?OpenGraphProperties) {
+  constructor(properties?: OpenGraphProperties) {
     this._properties = properties ? properties : {};
   }
 

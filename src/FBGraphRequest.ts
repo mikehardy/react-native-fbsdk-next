@@ -23,7 +23,7 @@
 
 'use strict';
 
-type GraphRequestCallback = (error: ?Object, result: ?Object) => void;
+type GraphRequestCallback = (error?: Object, result?: Object) => void;
 type GraphRequestConfig = {
   /**
    * The httpMethod to use for the request, for example "GET" or "POST".
@@ -56,20 +56,20 @@ class FBGraphRequest {
   /**
    * The optional config for the request.
    */
-  config: ?GraphRequestConfig;
+  config: GraphRequestConfig | undefined;
 
   /**
    * Called upon completion or failure of the request.
    */
-  callback: ?GraphRequestCallback;
+  callback: GraphRequestCallback | undefined;
 
   /**
    * Constructs a new Graph API request.
    */
   constructor(
     graphPath: string,
-    config: ?GraphRequestConfig,
-    callback: ?GraphRequestCallback,
+    config?: GraphRequestConfig,
+    callback?: GraphRequestCallback,
   ) {
     this.graphPath = graphPath;
     this.config = config ? config : {};
@@ -87,3 +87,4 @@ class FBGraphRequest {
 }
 
 module.exports = FBGraphRequest;
+export default FBGraphRequest;

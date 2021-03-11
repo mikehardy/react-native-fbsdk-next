@@ -23,21 +23,12 @@
 
 'use strict';
 
+// @ts-ignore FIXME typescript
 const ShareOpenGraphValueContainer = require('./FBShareOpenGraphValueContainer');
 
 /**
- * Represents an open graph action.
+ * Represents an open graph object.
  */
-class ShareOpenGraphAction extends ShareOpenGraphValueContainer {
-  /**
-   * The action type.
-   */
-  actionType: string;
+class ShareOpenGraphObject extends ShareOpenGraphValueContainer {}
 
-  constructor(actionType: string) {
-    super(null);
-    this.actionType = actionType;
-  }
-}
-
-module.exports = ShareOpenGraphAction;
+module.exports = ShareOpenGraphObject;

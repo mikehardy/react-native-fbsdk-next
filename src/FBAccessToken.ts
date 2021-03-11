@@ -38,7 +38,7 @@ type AccessTokenMap = {
   expirationTime: number,
   lastRefreshTime: number,
   dataAccessExpirationTime: number,
-  accessTokenSource?: string,
+  accessTokenSource: string | null,
 };
 
 /**
@@ -97,7 +97,7 @@ class FBAccessToken {
    * The source of access token.
    * @platform android
    */
-  accessTokenSource: ?string;
+  accessTokenSource: string | null;
 
   constructor(tokenMap: AccessTokenMap) {
     this.accessToken = tokenMap.accessToken;
@@ -116,9 +116,9 @@ class FBAccessToken {
   /**
    * Getter for the access token that is current for the application.
    */
-  static getCurrentAccessToken(): Promise<?FBAccessToken> {
-    return new Promise((resolve, reject) => {
-      AccessToken.getCurrentAccessToken((tokenMap) => {
+  static getCurrentAccessToken(): Promise<FBAccessToken | null> {
+    return new Promise((resolve, _) => {
+      AccessToken.getCurrentAccessToken((tokenMap: AccessTokenMap) => {
         if (tokenMap) {
           resolve(new FBAccessToken(tokenMap));
         } else {
@@ -148,7 +148,7 @@ class FBAccessToken {
    * listener when called.
    */
   static addListener(
-    listener: (accessToken: ?FBAccessToken) => void,
+    listener: (accessToken: FBAccessToken | null) => void,
   ): () => void {
     const subscription = eventEmitter.addListener(
       'fbsdk.accessTokenDidChange',

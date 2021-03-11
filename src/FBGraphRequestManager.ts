@@ -28,12 +28,13 @@ const NativeGraphRequestManager = require('react-native').NativeModules
 
 import type GraphRequest from './FBGraphRequest';
 
-type Callback = (error: ?Object, result: ?Object) => void;
+type Callback = (error?: Object, result?: Object) => void;
 
 function _verifyParameters(request: GraphRequest) {
   if (request.config && request.config.parameters) {
     for (var key in request.config.parameters) {
       var param = request.config.parameters[key];
+      // @ts-ignore param.string below needs some type coercion but works from original code FIXME typescript
       if (typeof param === 'object' && param.string) {
         continue;
       }
@@ -49,8 +50,8 @@ function _verifyParameters(request: GraphRequest) {
 
 class FBGraphRequestManager {
   requestBatch: Array<GraphRequest>;
-  requestCallbacks: Array<?Callback>;
-  batchCallback: Callback;
+  requestCallbacks: Array<Callback | undefined>;
+  batchCallback: Callback | undefined;
 
   constructor() {
     this.requestBatch = [];
@@ -73,7 +74,7 @@ class FBGraphRequestManager {
    * graph request made, only that the entire batch has finished executing.
    */
   addBatchCallback(
-    callback: (error: ?Object, result: ?Object) => void,
+    callback: (error?: Object, result?: Object) => void,
   ): FBGraphRequestManager {
     this.batchCallback = callback;
     return this;
@@ -89,11 +90,11 @@ class FBGraphRequestManager {
    * extra permission and it's unncessary for the sdk. Instead, you can use the NetInfo module
    * in react-native to get the network status.
    */
-  start(timeout: ?number) {
+  start(timeout?: number) {
     const that = this;
-    const callback = (error, result, response) => {
+    const callback = (error: Object, result: Object, response?: Object[][]) => {
       if (response) {
-        that.requestCallbacks.forEach((innerCallback, index, array) => {
+        that.requestCallbacks.forEach((innerCallback, index, _) => {
           if (innerCallback) {
             innerCallback(response[index][0], response[index][1]);
           }
